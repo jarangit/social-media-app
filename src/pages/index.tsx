@@ -32,7 +32,7 @@ export default function Home() {
         <div className="flex justify-center flex-col items-center min-h-screen">
           <div className="border w-[400px] py-10 px-10 flex flex-col items-center rounded-xl gap-6">
             <div className="text-xl font-bold">
-              <div>Welcome to JR Social</div>
+              <div>Welcome</div>
             </div>
             <div>
               <button
