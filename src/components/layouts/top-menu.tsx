@@ -3,6 +3,7 @@ import { signIn, signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
 import React from 'react'
 import { AiOutlineLogin } from "react-icons/ai";
+import { TbSocial } from 'react-icons/tb';
 
 type Props = {}
 
@@ -11,7 +12,12 @@ const TopMenu = (props: Props) => {
 
   return (
     <div>
-      <div className="flex justify-end items-end p-3 border-b">
+      <div className="flex justify-between items-center p-3 border-b">
+        <div className='text-center w-full'>
+          <div className='md:hidden'>
+            <TbSocial size={50} />
+          </div>
+        </div>
         <div className="flex gap-2 items-center">
           <div className="relative w-10 h-10 rounded-full overflow-hidden">
             <Image
