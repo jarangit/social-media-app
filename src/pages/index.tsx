@@ -1,22 +1,42 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/await-thenable */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import FeedTemplate from "~/components/templates/feed-template";
 
 import { api } from "~/utils/api";
 
 export default function Home() {
   const hello = api.post.hello.useQuery({ text: "from tRPC" });
+  const [tweetsData, setTweetsData] = useState<any>()
+  console.log('%cMyProject%cline:16%ctweetsData', 'color:#fff;background:#ee6f57;padding:3px;border-radius:2px', 'color:#fff;background:#1f3c88;padding:3px;border-radius:2px', 'color:#fff;background:rgb(96, 143, 159);padding:3px;border-radius:2px', tweetsData)
   const { data: sessionData } = useSession();
   console.log('%cMyProject%cline:10%csessionData', 'color:#fff;background:#ee6f57;padding:3px;border-radius:2px', 'color:#fff;background:#1f3c88;padding:3px;border-radius:2px', 'color:#fff;background:rgb(251, 178, 23);padding:3px;border-radius:2px', sessionData)
+  const tweets = api.tweet.infiniteFeed.useInfiniteQuery(
+    {},
+    {
+      // getNextPageParam: (lastPage) => lastPage?.nextCursor
+    }
+  )
 
+  const onGetTweets = async () => {
+    const res = await tweets
+    if (res) {
+      setTweetsData(tweets.data?.pages)
+    }
+  }
+  useEffect(() => {
+    if (sessionData) {
+      void onGetTweets()
+    }
+  }, [sessionData])
 
-  const { data: secretMessage } = api.post.getSecretMessage.useQuery(
-    undefined, // no input
-    { enabled: sessionData?.user !== undefined }
-  );
   return (
     <>
       <Head>
